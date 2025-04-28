@@ -1,8 +1,7 @@
-// التصميم المحسّن للواجهة
 'use client';
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { LogOut, Check, X } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 export default function Buttons() {
   const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -21,42 +20,6 @@ export default function Buttons() {
     }
   }, []);
 
-  const handle_checkIn = async () => {
-    if (!id) {
-      setMessage("يرجى تسجيل الدخول أولًا");
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${URL}/checkIn/${id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      setMessage(data);
-    } catch (error) {
-      setMessage("خطأ في تسجيل الحضور");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handle_checkOut = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${URL}/checkOut/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      setMessage(data);
-    } catch (error) {
-      setMessage("خطأ في تسجيل الانصراف");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("codeattendance");
     localStorage.removeItem("emailattendance");
@@ -65,58 +28,59 @@ export default function Buttons() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6">
-      <h1 className="text-xl md:text-2xl font-bold text-center text-[#111]">
-        بسم الله الرحمن الرحيم
-      </h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-blue-300 p-6 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+      {/* النص */}
+      <div className="text-center lg:text-left lg:ml-10">
+        <h1 className="text-4xl font-bold text-blue-800 mb-4">
+          نظام الحضور والانصراف للطلاب
+        </h1>
+        <p className="text-lg text-gray-700 max-w-lg">
+          مرحبًا بكم في نظام الحضور والانصراف الخاص بطلاب المرحلة الابتدائية. 
+          يمكنكم من خلال هذا النظام تسجيل حضور وغياب الطلاب بسهولة، 
+          بالإضافة إلى متابعة تقارير الحضور الشهرية. 
+          نسعى دائمًا لتطوير النظام وإضافة ميزات جديدة في المستقبل إن شاء الله.
+        </p>
+      </div>
 
-      {!code ? (
-        <Link
-          href="/login_signin"
-          className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600"
-        >
-          تسجيل دخول
-        </Link>
-      ) : (
-        <div className="bg-yellow-100 text-[#222] rounded-xl p-4 shadow-md">
-          <p className="mb-1 font-semibold">الاسم: {name}</p>
-          <p>الكود: {code}</p>
+      {/* الصورة */}
+      <div className="flex justify-center ">
+        <img
+          src="https://thaka.bing.com/th/id/OIP.8gmGtqAJh7SsE8VgQxrT0gHaFj?rs=1&pid=ImgDetMain"
+          alt="صورة تعبيرية لنظام الحضور"
+          className="rounded-lg shadow-lg w-full max-w-md"
+        />
+      </div>
+
+      {/* الأزرار */}
+      <div className="col-span-2 flex justify-center mt-6 lg:mt-12">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {!code && (
+            <Link
+              href="/login"
+              className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 text-center"
+            >
+              تسجيل دخول
+            </Link>
+          )}
+          {code && (
+            <>
+              <button className="bg-green-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-green-700 transition">
+                عرض التقارير
+              </button>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 flex items-center gap-2"
+              >
+                <LogOut size={18} /> تسجيل خروج
+              </button>
+            </>
+          )}
         </div>
-      )}
+      </div>
 
-      {code && (
-        <div className="flex gap-4 mt-6 bg-gray-50 p-6 rounded-2xl shadow-inner">
-          <button
-            className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 flex items-center gap-2"
-            onClick={handle_checkOut}
-            disabled={isLoading}
-          >
-            <X size={20} />
-            {isLoading ? "..." : "انصراف"}
-          </button>
-
-          <button
-            className="bg-green-500 text-white px-6 py-3 rounded-xl hover:bg-green-600 flex items-center gap-2"
-            onClick={handle_checkIn}
-            disabled={isLoading}
-          >
-            <Check size={20} />
-            {isLoading ? "..." : "حضور"}
-          </button>
-        </div>
-      )}
-
-      {code && (
-        <button
-          onClick={handleLogout}
-          className="mt-6 bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 flex items-center gap-2"
-        >
-          <LogOut size={18} /> تسجيل خروج
-        </button>
-      )}
-
+      {/* رسالة الحالة */}
       {message && (
-        <div className="mt-4 bg-blue-100 text-blue-700 px-4 py-2 rounded shadow">
+        <div className="mt-4 bg-blue-100 text-blue-700 px-4 py-2 rounded shadow col-span-2">
           {message}
         </div>
       )}

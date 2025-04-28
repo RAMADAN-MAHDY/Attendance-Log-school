@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import cookie from 'cookie';
 
-function LoginForm({ onSignInSuccess, onSignUp }) {
+function LoginForm({ onSignInSuccess }) {
     // const router = useRouter();
 
     const [names, setEmail] = useState( '');
@@ -124,7 +124,7 @@ function LoginForm({ onSignInSuccess, onSignUp }) {
                 
                 }
 
-                <button type='button' onClick={() => onSignUp()} className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}> إنشاء حساب</button>
+       
             </div>
         </form>
     );

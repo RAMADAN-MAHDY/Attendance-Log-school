@@ -28,6 +28,11 @@ const items = [
     url: "Administration",
     icon: Calendar,
   },
+  {
+    title: " تسجيل بيانات الطلاب (الاداره)",
+    url: "signin",
+    icon: Calendar,
+  },
 //   {
 //     title: "Search",
 //     url: "#",
