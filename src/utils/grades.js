@@ -5,7 +5,7 @@ export const grades = [
     },
     {
       grade: "الصف الثاني",
-      classes: ["فصل 1", "فصل 2"]
+      classes: ["فصل 1", "فصل 2", "فصل 3"]
     },
     {
       grade: "الصف الثالث",
@@ -13,7 +13,7 @@ export const grades = [
     },
     {
       grade: "الصف الرابع",
-      classes: ["فصل 1", "فصل 2"]
+      classes: ["فصل 1", "فصل 2", "فصل 3"]
     },
     {
       grade: "الصف الخامس",
@@ -21,6 +21,6 @@ export const grades = [
     },
     {
       grade: "الصف السادس",
-      classes: ["فصل 1", "فصل 2"]
+      classes: ["فصل 1", "فصل 2", "فصل 3"]
     }
   ];

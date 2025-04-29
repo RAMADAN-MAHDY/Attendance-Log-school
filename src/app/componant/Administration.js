@@ -145,7 +145,7 @@ const UserTable = () => {
   }
 
   return (
-    <div className="overflow-x-auto w-full p-4">
+    <div className="overflow-x-auto w-full p-4 bg-[#4455442a] shadow-[0px_16px_44px_rgba(120,25,44,0.5)] ">
       {/* شريط البحث والأزرار */}
       <div className="flex flex-wrap items-center mb-4">
         <input
@@ -194,10 +194,11 @@ const UserTable = () => {
       {/* الجدول */}
       <Table className="w-full border rounded-xl shadow-md">
         <TableHeader>
-          <TableRow className="bg-gray-100 text-gray-700">
+          <TableRow className="bg-[#5ceb5c] text-[#ffffff]">
             <TableHead>#</TableHead>
             <TableHead>الاسم</TableHead>
             <TableHead>الموبايل</TableHead>
+            <TableHead>الفصل</TableHead>
             <TableHead>حضور اليوم</TableHead>
             <TableHead>الكود</TableHead>
             <TableHead>تسجيل حضور</TableHead>
@@ -207,22 +208,24 @@ const UserTable = () => {
         <TableBody>
           {loadingStatus ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-4 text-gray-500"></TableCell>
+              <TableCell colSpan={7} className="py-4"></TableCell>
             </TableRow>
           ) : filteredUsers && filteredUsers.length > 0 ? (
             filteredUsers.map((user, index) => (
-              <TableRow key={user._id} className="border-b hover:bg-gray-100">
+              <TableRow key={user._id} className="border-b hover:bg-gray-100 bg-[#f1dea9c9]">
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{user.names}</TableCell>
                 <TableCell>0{user.phone}</TableCell>
+                <TableCell>{user.classRoom.match(/\d+/) ? user.classRoom.match(/\d+/)[0] : "لا يوجد رقم"}</TableCell>
+
                 <TableCell>{loadingStatus ? "..." : getAttendanceStatus(user._id)}</TableCell>
                 <TableCell>{user.code}</TableCell>
-                <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#ffffffa9] cursor-pointer w-11">
+                <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11">
                   <button className="w-full h-full" onClick={() => handleCheckIn(user._id)}>
                     حضر
                   </button>
                 </TableCell>
-                <TableCell className="bg-[#2092f0a9] rounded-3xl hover:bg-[#ffffffa9] cursor-pointer w-11">
+                <TableCell className="bg-[#2092f0a9] rounded-3xl hover:bg-[#656c88a9] cursor-pointer w-11">
                   <button className="w-full h-full" onClick={() => handleAdminClick(user._id, user.names, user.code)}>
                     السجل
                   </button>

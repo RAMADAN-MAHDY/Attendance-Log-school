@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-[#5544551c]">
         <SidebarProvider>
           <AppSidebar />
           <main className="w-[100%]">

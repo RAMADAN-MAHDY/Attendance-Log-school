@@ -57,16 +57,16 @@ export default function Buttons() {
           {!code && (
             <Link
               href="/login"
-              className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 text-center"
+              className="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 text-center shadow-[0px_7px_15px_rgba(0,0,0,0.2)] transition"
             >
-              تسجيل دخول
+              تسجيل دخول لعرض تقرير الطالب
             </Link>
           )}
           {code && (
             <>
-              <button className="bg-green-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-green-700 transition">
+              <Link href={"/AttendanceTable"} className="bg-green-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-green-700 transition">
                 عرض التقارير
-              </button>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 flex items-center gap-2"

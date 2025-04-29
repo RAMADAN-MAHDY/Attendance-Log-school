@@ -61,7 +61,7 @@ const AttendanceTable = ({ userId }) => {
   }
 
   return (
-    <div className="overflow-x-auto w-full p-4">
+    <div className="overflow-x-auto w-full p-4 shadow-[0px_4px_10px_rgba(120,25,44,0.5)] rounded-3xl bg-[#e7c7c7]"> 
       {/* الفلاتر */}
       <div className="flex flex-wrap justify-center items-center gap-4 mb-4">
         <select
@@ -100,7 +100,7 @@ const AttendanceTable = ({ userId }) => {
       {/* الجدول */}
       <Table className="w-full border rounded-xl shadow-md">
         <TableHeader>
-          <TableRow className="bg-gray-100 text-gray-700">
+          <TableRow className="bg-[#2ce062e8] text-gray-700">
             <TableHead>#</TableHead>
             <TableHead>تاريخ الحضور</TableHead>
             <TableHead>تاريخ الانصراف</TableHead>
@@ -110,7 +110,7 @@ const AttendanceTable = ({ userId }) => {
         <TableBody>
           {filteredRecords.length > 0 ? (
             filteredRecords.map((record, index) => (
-              <TableRow key={record._id} className="border-b hover:bg-gray-50 transition-colors">
+              <TableRow key={record._id} className="border-b hover:bg-gray-50 transition-colors bg-[#e9f09083]">
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{format(new Date(record.checkIn), "yyyy-MM-dd / hh:mm a")}</TableCell>
                 <TableCell>{record.checkOut ? format(new Date(record.checkOut), "yyyy-MM-dd / hh:mm a") : "لم يسجل خروج"}</TableCell>
