@@ -21,6 +21,7 @@ export default function RootLayout({
       <body className="bg-[#5544551c]">
         <SidebarProvider>
           <AppSidebar />
+          <div id="__next"></div>
           <main className="w-[100%]">
             <SidebarTrigger />
             {children}

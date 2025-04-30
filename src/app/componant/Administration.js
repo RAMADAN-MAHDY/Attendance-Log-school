@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { ar } from "date-fns/locale";
 import { grades } from "@/utils/grades";
 import AttendanceTable from "./AttendanceTable"; 
-
+import PromoteStudents from "./promote-students"; // استيراد مكون ترحيل الطلاب
 const UserTable = () => {
   // حالات لتخزين البيانات المختلفة
   const [classRoom, setClassRoom] = useState(""); // لتخزين الفصل الدراسي المختار
@@ -146,6 +146,8 @@ const UserTable = () => {
 
   return (
     <div className="overflow-x-auto w-full p-4 bg-[#4455442a] shadow-[0px_16px_44px_rgba(120,25,44,0.5)] ">
+
+
       {/* شريط البحث والأزرار */}
       <div className="flex flex-wrap items-center mb-4">
         <input
@@ -196,8 +198,8 @@ const UserTable = () => {
         <TableHeader>
           <TableRow className="bg-[#5ceb5c] text-[#ffffff]">
             <TableHead>#</TableHead>
-            <TableHead>الاسم</TableHead>
             <TableHead>الموبايل</TableHead>
+            <TableHead>الاسم</TableHead>
             <TableHead>الفصل</TableHead>
             <TableHead>حضور اليوم</TableHead>
             <TableHead>الكود</TableHead>
@@ -214,8 +216,8 @@ const UserTable = () => {
             filteredUsers.map((user, index) => (
               <TableRow key={user._id} className="border-b hover:bg-gray-100 bg-[#f1dea9c9]">
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{user.names}</TableCell>
                 <TableCell>0{user.phone}</TableCell>
+                <TableCell>{user.names}</TableCell>
                 <TableCell>{user.classRoom.match(/\d+/) ? user.classRoom.match(/\d+/)[0] : "لا يوجد رقم"}</TableCell>
 
                 <TableCell>{loadingStatus ? "..." : getAttendanceStatus(user._id)}</TableCell>
@@ -266,6 +268,9 @@ const UserTable = () => {
           <AttendanceTable userId={userDetails.userId} />
         </section>
       )}
+             {/* زر ترحيل بيانات الطلاب للعام التالي   */}
+
+             <PromoteStudents/>
     </div>
   );
 };
