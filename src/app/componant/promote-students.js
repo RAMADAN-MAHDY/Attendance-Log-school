@@ -59,22 +59,28 @@ export default function PromoteStudents() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 mt-6 p-4">
+    <div className="flex flex-col items-center justify-center bg-gray-100 mt-6 p-4 shadow-[0px_15px_15px_rgba(0,120,0,0.4)] rounded-lg">
         <h1 className="text-2xl font-bold mb-4 text-center">ترحيل الطلاب للعام الجديد</h1>
       {responseMessage && (
         <p className="text-[#2e2ece] font-bold p-2 text-center  bottom-[20px] rounded-3xl bg-[#2bec2b]">
           {responseMessage}
         </p>
       )}
-
+        <p className="text-gray-700 mb-4 text-center">
+            أدخل أكواد الطلاب الذين لم ينجحوا في السنة الدراسية الحالية (مفصولة بفواصل).
+            <br />
+            سيتم ترحيل الطلاب الناجحين فقط. <br />  
+            <span className="text-red-500">يرجى التأكد من إدخال الأكواد بشكل صحيح.</span>
+        </p>
       <input
         className="border-2 border-gray-300 rounded-lg mt-6 p-2 mb-4 w-full"
         type="text"
-        placeholder="ادخل اكواد الطلاب الفشله اللي منجحوش  (مفصولة بفواصل) مثال     123, 456, 789 "
+        placeholder=" مثال     123, 456, 789 "
         onChange={(e) => setExcludedCodes(e.target.value.split(",").map((code) => parseInt(code.trim())))}
       />
       <button
-        className="bg-[#ff1b1b] rounded-3xl p-3"
+        className="bg-[#ff1b1b] rounded-3xl p-3 shadow-[0px_15px_15px_rgba(0,120,0,0.4)] text-white font-bold hover:bg-[#ff1b1b] transition duration-300 ease-in-out hover:shadow-[0px_15px_15px_rgba(0,0,0,0.4)]"
+        type="button"
         onClick={handleOpenModal}
         disabled={loading}
       >
