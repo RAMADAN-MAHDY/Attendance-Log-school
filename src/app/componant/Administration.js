@@ -241,15 +241,11 @@ const UserTable = () => {
 
                 <TableCell>{loadingStatus ? "..." : getAttendanceStatus(user._id)}</TableCell>
                 <TableCell>{user.code}</TableCell>
-                <TableCell className="bg-[#f03820] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11">
-                  <button className="w-full h-full" onClick={() => handlecancelCheckIn(user._id)}>
+                <TableCell className="bg-[#f03820] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11" onClick={() => handlecancelCheckIn(user._id)}>
                     غياب
-                  </button>
                 </TableCell>
                 <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11" onClick={() => handleCheckIn(user._id)}>
-                
                     حضر
-             
                 </TableCell>
                 <TableCell className="bg-[#2092f0a9] rounded-3xl hover:bg-[#656c88a9] cursor-pointer w-11" onClick={() => handleAdminClick(user._id, user.names, user.code)}>
                 
