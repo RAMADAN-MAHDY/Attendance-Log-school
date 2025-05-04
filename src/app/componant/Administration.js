@@ -246,15 +246,15 @@ const UserTable = () => {
                     غياب
                   </button>
                 </TableCell>
-                <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11">
-                  <button className="w-full h-full" onClick={() => handleCheckIn(user._id)}>
+                <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11" onClick={() => handleCheckIn(user._id)}>
+                
                     حضر
-                  </button>
+             
                 </TableCell>
-                <TableCell className="bg-[#2092f0a9] rounded-3xl hover:bg-[#656c88a9] cursor-pointer w-11">
-                  <button className="w-full h-full" onClick={() => handleAdminClick(user._id, user.names, user.code)}>
+                <TableCell className="bg-[#2092f0a9] rounded-3xl hover:bg-[#656c88a9] cursor-pointer w-11" onClick={() => handleAdminClick(user._id, user.names, user.code)}>
+                
                     السجل
-                  </button>
+                  
                 </TableCell>
               </TableRow>
             ))
