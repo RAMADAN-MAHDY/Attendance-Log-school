@@ -151,20 +151,20 @@ const UserTable = () => {
 
 
 
-//   if (process.env.NEXT_PUBLIC_Pass_admin !== adminPass) {
-//     return (
-//         <div className="w-full max-w-md p-8 mt-[10%] ml-[20%] space-y-8 bg-white rounded-lg shadow-md">
+  if (process.env.NEXT_PUBLIC_Pass_admin !== adminPass) {
+    return (
+        <div className="w-full max-w-md p-8 mt-[10%] ml-[20%] space-y-8 bg-white rounded-lg shadow-md">
 
-//       <div className="text-center py-4  flex-col justify-center items-center text-gray-500 bg-[#d7da8ea6] rounded-3xl">
-//         <h2> ادارة الحضور والغياب</h2>
+      <div className="text-center py-4  flex-col justify-center items-center text-gray-500 bg-[#d7da8ea6] rounded-3xl">
+        <h2> ادارة الحضور والغياب</h2>
 
-//         <h2>دخول بصلاحية الادمن (الادارة)</h2>
-//         <h2>يرجى إدخال كلمة المرور </h2>
-//         <input type="number" onChange={(e) => setAdminPass(e.target.value)} className='border-[#29ff94] bg-[#f5f7f5] text-[#000] pl-3' />
-//       </div>
-//       </div>
-//     );
-//   }
+        <h2>دخول بصلاحية الادمن (الادارة)</h2>
+        <h2>يرجى إدخال كلمة المرور </h2>
+        <input type="number" onChange={(e) => setAdminPass(e.target.value)} className='border-[#29ff94] bg-[#f5f7f5] text-[#000] pl-3' />
+      </div>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-auto w-full p-4 bg-[#4455442a] shadow-[0px_16px_44px_rgba(120,25,44,0.5)] ">
