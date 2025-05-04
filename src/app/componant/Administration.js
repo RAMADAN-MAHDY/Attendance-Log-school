@@ -13,6 +13,7 @@ const UserTable = () => {
   const [adminPass, setAdminPass] = useState(0); // كلمة مرور الأدمن
   const [refreshFlag, setRefreshFlag] = useState(true); // لتحديث البيانات عند الحاجة
   const [loadingStatus, setLoading] = useState(true); // حالة التحميل
+  const [loadingAllData, setLoadingAll] = useState(false); // حالة التحميل
   const [attendanceStatus, setAttendanceStatus] = useState(); // حالة الحضور
   const [showUserTable, setShowUserTable] = useState(false); // عرض السجل
   const [userDetails, setUserDetails] = useState({ userId: null, userName: null, userCode: null }); // تفاصيل المستخدم
@@ -23,15 +24,18 @@ const UserTable = () => {
 
   // جلب بيانات الطلاب بناءً على السنة والفصل الدراسي
   const fetchUserData = async (grade, classRoom) => {
+    setLoadingAll(true); // بدء حالة التحميل
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUser?grade=${grade}&classRoom=${classRoom}`);
       const data = await response.json();
       setAllUsers(data.getUser); // تخزين جميع المستخدمين
       setFilteredUsers(data.getUser); // تعيين المستخدمين المفلترين
+
     } catch (error) {
       console.error("Error fetching users:", error);
     } finally {
       setLoading(false); // إنهاء حالة التحميل
+      setLoadingAll(false); // إنهاء حالة التحميل
     }
   };
 
@@ -147,20 +151,20 @@ const UserTable = () => {
 
 
 
-  if (process.env.NEXT_PUBLIC_Pass_admin !== adminPass) {
-    return (
-        <div className="w-full max-w-md p-8 mt-[10%] ml-[20%] space-y-8 bg-white rounded-lg shadow-md">
+//   if (process.env.NEXT_PUBLIC_Pass_admin !== adminPass) {
+//     return (
+//         <div className="w-full max-w-md p-8 mt-[10%] ml-[20%] space-y-8 bg-white rounded-lg shadow-md">
 
-      <div className="text-center py-4  flex-col justify-center items-center text-gray-500 bg-[#d7da8ea6] rounded-3xl">
-        <h2> ادارة الحضور والغياب</h2>
+//       <div className="text-center py-4  flex-col justify-center items-center text-gray-500 bg-[#d7da8ea6] rounded-3xl">
+//         <h2> ادارة الحضور والغياب</h2>
 
-        <h2>دخول بصلاحية الادمن (الادارة)</h2>
-        <h2>يرجى إدخال كلمة المرور </h2>
-        <input type="number" onChange={(e) => setAdminPass(e.target.value)} className='border-[#29ff94] bg-[#f5f7f5] text-[#000] pl-3' />
-      </div>
-      </div>
-    );
-  }
+//         <h2>دخول بصلاحية الادمن (الادارة)</h2>
+//         <h2>يرجى إدخال كلمة المرور </h2>
+//         <input type="number" onChange={(e) => setAdminPass(e.target.value)} className='border-[#29ff94] bg-[#f5f7f5] text-[#000] pl-3' />
+//       </div>
+//       </div>
+//     );
+//   }
 
   return (
     <div className="overflow-x-auto w-full p-4 bg-[#4455442a] shadow-[0px_16px_44px_rgba(120,25,44,0.5)] ">
@@ -227,11 +231,22 @@ const UserTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {loadingStatus ? (
+
+         
+            
+            {loadingAllData ? (
             <TableRow>
-              <TableCell colSpan={7} className="py-4"></TableCell>
+              <TableCell colSpan={7} className="py-4">
+                <div className="flex justify-center items-center">
+                    <svg className="animate-spin h-5 w-5 mr-3 bg-[#545] text-blue-500" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12z"></path>
+                    </svg>
+                    <span className="text-gray-500">جاري تحميل البيانات...</span>
+                </div>
+              </TableCell>
             </TableRow>
-          ) : filteredUsers && filteredUsers.length > 0 ? (
+          ) : (filteredUsers && filteredUsers.length > 0) && (
             filteredUsers.map((user, index) => (
               <TableRow key={user._id} className="border-b hover:bg-gray-100 bg-[#f1dea9c9]">
                 <TableCell>{index + 1}</TableCell>
@@ -254,13 +269,7 @@ const UserTable = () => {
                 </TableCell>
               </TableRow>
             ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={7} className="text-center py-4 text-gray-500">
-                لا توجد بيانات لعرضها
-              </TableCell>
-            </TableRow>
-          )}
+          ) }
         </TableBody>
       </Table>
 
