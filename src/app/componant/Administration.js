@@ -71,7 +71,25 @@ const UserTable = () => {
       console.error("خطأ في تسجيل الحضور", error);
     }
   };
-
+   // تسجيل الغياب
+   const handlecancelCheckIn = async (id) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cancelCheckIn/${id}`, {
+        method: 'DELETE',
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+  
+      const data = await res.json();
+      setRefreshFlag(!refreshFlag); // تحديث البيانات
+      fetchAttendanceStatus(); // تحديث حالة الحضور
+    } catch (error) {
+      console.error("خطأ في تسجيل الغياب", error);
+    }
+  };
   // عرض تفاصيل المستخدم
   const handleAdminClick = (userId, userName, userCode) => {
     setUserDetails({ userId, userName, userCode });
@@ -203,6 +221,7 @@ const UserTable = () => {
             <TableHead>الفصل</TableHead>
             <TableHead>حضور اليوم</TableHead>
             <TableHead>الكود</TableHead>
+            <TableHead>تسجيل غياب</TableHead>
             <TableHead>تسجيل حضور</TableHead>
             <TableHead>عرض</TableHead>
           </TableRow>
@@ -222,6 +241,11 @@ const UserTable = () => {
 
                 <TableCell>{loadingStatus ? "..." : getAttendanceStatus(user._id)}</TableCell>
                 <TableCell>{user.code}</TableCell>
+                <TableCell className="bg-[#f03820] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11">
+                  <button className="w-full h-full" onClick={() => handlecancelCheckIn(user._id)}>
+                    غياب
+                  </button>
+                </TableCell>
                 <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11">
                   <button className="w-full h-full" onClick={() => handleCheckIn(user._id)}>
                     حضر

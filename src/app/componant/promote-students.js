@@ -115,10 +115,16 @@ export default function PromoteStudents() {
             إلغاء
           </button>
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+            disabled={loading}
+            className={`${loading ? "bg-[#5450]" : "bg-green-500 hover:bg-green-600"} text-white px-4 py-2 rounded-lg `}
             onClick={handleConfirm}
           >
-            تأكيد
+           {loading ? <div>
+            <svg className="animate-spin bg-[#434] h- w-10 mr-3 text-[#32ff32]" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12z"></path>
+            </svg>
+           </div> : "تأكيد"}
           </button>
         </div>
       </Modal>
