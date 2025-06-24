@@ -34,8 +34,8 @@ const UserTable = () => {
     } catch (error) {
       console.error("Error fetching users:", error);
     } finally {
-      setLoading(false); // إنهاء حالة التحميل
-      setLoadingAll(false); // إنهاء حالة التحميل
+      setLoading(false); 
+      setLoadingAll(false); 
     }
   };
 
@@ -59,41 +59,98 @@ const UserTable = () => {
     }
   };
 
+  // تعديل حاله الحضور والغياب "✅" : "❌"
+const updateAttendanceStatus = async (id, status) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/router_IsUserPresentToday/update/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    const data = await res.json();
+    console.log(data)
+    
+    if (res.ok) {
+
+        setLoading(false)
+      // تحديث الحالة محلياً بدون عمل Fetch كامل
+      setAttendanceStatus((prev) => {
+  const existing = prev?.usersWithAttendance || [];
+
+  if (status === "Absent") {
+    return {
+      ...prev,
+      usersWithAttendance: existing.filter(item => item.userId !== id)
+    };
+  }
+
+  if (existing.find(item => item.userId === id)) {
+    return {
+      ...prev,
+      usersWithAttendance: existing.map(item =>
+        item.userId === id ? { ...item, status } : item
+      )
+    };
+  } else if (status === "Present") {
+    return {
+      ...prev,
+      usersWithAttendance: [...existing, {
+        userId: id,
+        userName: allUsers.find(user => user._id === id)?.names || "غير معروف",
+        status
+      }]
+    };
+  }
+
+  return prev;
+});
+
+    } else {
+      console.error(data.message);
+    }
+  } catch (error) {
+    console.error("خطأ في تحديث حالة الحضور", error);
+  }
+};
+
+
+
+
   // تسجيل الحضور
-  const handleCheckIn = async (id) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkIn/${id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      setRefreshFlag(!refreshFlag); // تحديث البيانات
-      const data = await res.json();
-      if (res.ok) {
-        fetchAttendanceStatus(); // تحديث حالة الحضور
-      }
-    } catch (error) {
-      console.error("خطأ في تسجيل الحضور", error);
-    }
-  };
-   // تسجيل الغياب
-   const handlecancelCheckIn = async (id) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cancelCheckIn/${id}`, {
-        method: 'DELETE',
-        headers: { "Content-Type": "application/json" },
-      });
+//   const handleCheckIn = async (id) => {
+//     try {
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkIn/${id}`, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//       });
+//       setRefreshFlag(!refreshFlag); // تحديث البيانات
+//       const data = await res.json();
+//       if (res.ok) {
+//         // fetchAttendanceStatus(); // تحديث حالة الحضور
+//       }
+//     } catch (error) {
+//       console.error("خطأ في تسجيل الحضور", error);
+//     }
+//   };
+//    // تسجيل الغياب
+//    const handlecancelCheckIn = async (id) => {
+//     try {
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cancelCheckIn/${id}`, {
+//         method: 'DELETE',
+//         headers: { "Content-Type": "application/json" },
+//       });
   
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+//       if (!res.ok) {
+//         throw new Error(`HTTP error! status: ${res.status}`);
+//       }
   
-      const data = await res.json();
-      setRefreshFlag(!refreshFlag); // تحديث البيانات
-      fetchAttendanceStatus(); // تحديث حالة الحضور
-    } catch (error) {
-      console.error("خطأ في تسجيل الغياب", error);
-    }
-  };
+//       const data = await res.json();
+//       setRefreshFlag(!refreshFlag); // تحديث البيانات
+//     //   fetchAttendanceStatus(); // تحديث حالة الحضور
+//     } catch (error) {
+//       console.error("خطأ في تسجيل الغياب", error);
+//     }
+//   };
   // عرض تفاصيل المستخدم
   const handleAdminClick = (userId, userName, userCode) => {
     setUserDetails({ userId, userName, userCode });
@@ -256,10 +313,14 @@ const UserTable = () => {
 
                 <TableCell>{loadingStatus ? "..." : getAttendanceStatus(user._id)}</TableCell>
                 <TableCell>{user.code}</TableCell>
-                <TableCell className="bg-[#f03820] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11" onClick={() => handlecancelCheckIn(user._id)}>
+                <TableCell className="bg-[#f03820] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11"
+                  onClick={() => updateAttendanceStatus(user._id, "Absent")}
+                >
                     غياب
                 </TableCell>
-                <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11" onClick={() => handleCheckIn(user._id)}>
+                <TableCell className="bg-[#5bf020a9] rounded-3xl hover:bg-[#3eff4f57] cursor-pointer w-11"
+                 onClick={() => updateAttendanceStatus(user._id, "Present")}
+                 >
                     حضر
                 </TableCell>
                 <TableCell className="bg-[#2092f0a9] rounded-3xl hover:bg-[#656c88a9] cursor-pointer w-11" onClick={() => handleAdminClick(user._id, user.names, user.code)}>
