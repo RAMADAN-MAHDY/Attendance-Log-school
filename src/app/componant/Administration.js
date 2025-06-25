@@ -85,25 +85,23 @@ const updateAttendanceStatus = async (id, status) => {
     };
   }
 
-  if (existing.find(item => item.userId === id)) {
-    return {
-      ...prev,
-      usersWithAttendance: existing.map(item =>
-        item.userId === id ? { ...item, status } : item
-      )
-    };
-  } else if (status === "Present") {
-    return {
-      ...prev,
-      usersWithAttendance: [...existing, {
-        userId: id,
-        userName: allUsers.find(user => user._id === id)?.names || "غير معروف",
-        status
-      }]
-    };
-  }
-
-  return prev;
+ if (existing.find(item => item.userId === id)) {
+  return {
+    ...prev,
+    usersWithAttendance: existing.map(item =>
+      item.userId === id ? { ...item, status } : item
+    )
+  };
+} else {
+  return {
+    ...prev,
+    usersWithAttendance: [...existing, {
+      userId: id,
+      userName: allUsers.find(user => user._id === id)?.names || "غير معروف",
+      status
+    }]
+  };
+}
 });
 
     } else {
@@ -124,13 +122,14 @@ const updateAttendanceStatus = async (id, status) => {
   const normalizeText = (text) => String(text).toLowerCase().normalize("NFKD");
 
   // جلب حالة الحضور للمستخدم
-  const getAttendanceStatus = (userId) => {
-    if (attendanceStatus) {
-      const userAttendance = attendanceStatus.usersWithAttendance.find(item => item.userId === userId);
-      return userAttendance ? "✅" : "❌";
-    }
-    return "";
-  };
+const getAttendanceStatus = (userId) => {
+  if (attendanceStatus) {
+    const userAttendance = attendanceStatus.usersWithAttendance.find(item => item.userId === userId);
+    return userAttendance ? (userAttendance.status === "Present" ? "✅" : "❌") : "❌";
+  }
+  return "";
+};
+
 
   // البحث في المستخدمين
   const handleSearch = (searchText) => {
