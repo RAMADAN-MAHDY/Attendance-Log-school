@@ -5,11 +5,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { format } from "date-fns";
 import { ar } from "date-fns/locale";
 import { grades } from "@/utils/grades";
+import MarkAllPresentButton from './MarkAllPresentButton';
 import AttendanceTable from "./AttendanceTable"; 
 import PromoteStudents from "./promote-students"; // استيراد مكون ترحيل الطلاب
 const UserTable = () => {
   // حالات لتخزين البيانات المختلفة
   const [classRoom, setClassRoom] = useState(""); // لتخزين الفصل الدراسي المختار
+  const [grade, setGrade] = useState(""); // السنة الدراسية المختارة
   const [adminPass, setAdminPass] = useState(0); // كلمة مرور الأدمن
   const [refreshFlag, setRefreshFlag] = useState(true); // لتحديث البيانات عند الحاجة
   const [loadingStatus, setLoading] = useState(true); // حالة التحميل
@@ -19,7 +21,6 @@ const UserTable = () => {
   const [userDetails, setUserDetails] = useState({ userId: null, userName: null, userCode: null }); // تفاصيل المستخدم
   const [searchText, setSearchText] = useState(""); // نص البحث
   const [filteredUsers, setFilteredUsers] = useState([]); // المستخدمون المفلترون
-  const [grade, setGrade] = useState(""); // السنة الدراسية المختارة
   const [allUsers, setAllUsers] = useState([]); // جميع المستخدمين
 
   // جلب بيانات الطلاب بناءً على السنة والفصل الدراسي
@@ -113,44 +114,6 @@ const updateAttendanceStatus = async (id, status) => {
   }
 };
 
-
-
-
-  // تسجيل الحضور
-//   const handleCheckIn = async (id) => {
-//     try {
-//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkIn/${id}`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//       });
-//       setRefreshFlag(!refreshFlag); // تحديث البيانات
-//       const data = await res.json();
-//       if (res.ok) {
-//         // fetchAttendanceStatus(); // تحديث حالة الحضور
-//       }
-//     } catch (error) {
-//       console.error("خطأ في تسجيل الحضور", error);
-//     }
-//   };
-//    // تسجيل الغياب
-//    const handlecancelCheckIn = async (id) => {
-//     try {
-//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cancelCheckIn/${id}`, {
-//         method: 'DELETE',
-//         headers: { "Content-Type": "application/json" },
-//       });
-  
-//       if (!res.ok) {
-//         throw new Error(`HTTP error! status: ${res.status}`);
-//       }
-  
-//       const data = await res.json();
-//       setRefreshFlag(!refreshFlag); // تحديث البيانات
-//     //   fetchAttendanceStatus(); // تحديث حالة الحضور
-//     } catch (error) {
-//       console.error("خطأ في تسجيل الغياب", error);
-//     }
-//   };
   // عرض تفاصيل المستخدم
   const handleAdminClick = (userId, userName, userCode) => {
     setUserDetails({ userId, userName, userCode });
@@ -208,20 +171,20 @@ const updateAttendanceStatus = async (id, status) => {
 
 
 
-  if (process.env.NEXT_PUBLIC_Pass_admin !== adminPass) {
-    return (
-        <div className="w-full max-w-md p-8 mt-[10%] ml-[20%] space-y-8 bg-white rounded-lg shadow-md">
+//   if (process.env.NEXT_PUBLIC_Pass_admin !== adminPass) {
+//     return (
+//         <div className="w-full max-w-md p-8 mt-[10%] ml-[20%] space-y-8 bg-white rounded-lg shadow-md">
 
-      <div className="text-center py-4  flex-col justify-center items-center text-gray-500 bg-[#d7da8ea6] rounded-3xl">
-        <h2> ادارة الحضور والغياب</h2>
+//       <div className="text-center py-4  flex-col justify-center items-center text-gray-500 bg-[#d7da8ea6] rounded-3xl">
+//         <h2> ادارة الحضور والغياب</h2>
 
-        <h2>دخول بصلاحية الادمن (الادارة)</h2>
-        <h2>يرجى إدخال كلمة المرور </h2>
-        <input type="number" onChange={(e) => setAdminPass(e.target.value)} className='border-[#29ff94] bg-[#f5f7f5] text-[#000] pl-3' />
-      </div>
-      </div>
-    );
-  }
+//         <h2>دخول بصلاحية الادمن (الادارة)</h2>
+//         <h2>يرجى إدخال كلمة المرور </h2>
+//         <input type="number" onChange={(e) => setAdminPass(e.target.value)} className='border-[#29ff94] bg-[#f5f7f5] text-[#000] pl-3' />
+//       </div>
+//       </div>
+//     );
+//   }
 
   return (
     <div className="overflow-x-auto w-full p-4 bg-[#4455442a] shadow-[0px_16px_44px_rgba(120,25,44,0.5)] ">
@@ -271,6 +234,15 @@ const updateAttendanceStatus = async (id, status) => {
           <option value="فصل 3">فصل 3</option>
         </select>
       </div>
+{/* زرار تسجيل الحضور بضغطه واحده للفصل class room */}
+   {classRoom &&
+  <MarkAllPresentButton
+  grade={grade}
+  classRoom={classRoom}
+  onSuccess={() => fetchAttendanceStatus()} 
+/>
+  }  
+
 
       {/* الجدول */}
       <Table className="w-full border rounded-xl shadow-md">
