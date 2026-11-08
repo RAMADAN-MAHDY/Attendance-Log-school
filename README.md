@@ -7,6 +7,7 @@ Attendance Log School is a web-based application designed to manage student atte
 
 ---
 
+
 ## Features | الميزات
 - **Student Attendance Management**: Log attendance for students and track their check-in and check-out times.  
   **إدارة حضور الطلاب**: تسجيل حضور الطلاب وتتبع أوقات تسجيل الدخول والخروج.
